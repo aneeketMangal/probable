@@ -7,11 +7,7 @@ export function useProbable() {
   return useContext(ProbableContext)
 }
 
-function getRandomWord() {
-  const words = data.words;
-  const randomIndex = Math.floor(Math.random() * words.length);
-  return words[randomIndex];
-}
+
 
 
 export function ProbableProvider({ children }) {
@@ -22,6 +18,36 @@ export function ProbableProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [gameOver, setGameOver] = useState(false);
 
+  function getRandomWord() {
+    const words = data.words;
+    const randomIndex = Math.floor(Math.random() * words.length);
+    return words[randomIndex];
+  }
+
+  function checkGuess(guess) {
+    const words = data.words;
+    if(words.includes(guess)) {
+      console.log("yes");
+      setGuessed(guessed.concat(guess));
+      setGuessCount(guessCount + 1);
+      if(guess === currWord){
+       alert("Jeet gaye aap")
+       setGameOver(true);
+       return 1;
+      }
+      
+      if(guessCount === 6){
+        alert("You lose")
+        setGameOver(true);
+        return 1;
+      }
+  }
+    else{
+      alert("No such word")
+      return 0;
+    }
+  }
+  
   useEffect(()=>{
     const a = getRandomWord();
     setCurrWord(a);
@@ -41,6 +67,7 @@ export function ProbableProvider({ children }) {
     setGuessed,
     gameOver, 
     setGameOver,
+    checkGuess
   }
   return (
     <ProbableContext.Provider value={value}>

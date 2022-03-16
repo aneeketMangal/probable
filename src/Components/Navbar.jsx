@@ -19,7 +19,6 @@ import {
   Button
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const NavLink = ({ children }) => (
   <Link
     px={2}

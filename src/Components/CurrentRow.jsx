@@ -8,6 +8,8 @@ import GridItem from './GridItem';
 
 
 export default function CurrentRow({ word }) {
+    const len = 5- word.length;
+
     return (
         <Stack direction={'row'} spacing={3} justifyContent='center'>
             {Array.from(word).map((val, index) => {
@@ -16,6 +18,14 @@ export default function CurrentRow({ word }) {
                 )
             })
             }
+            {
+                Array(len).fill(0).map((_, index) => {
+                    return (
+                        <GridItem key= {index} status='normal' guess =''/>
+                    )
+                })
+            }
+
             
         </Stack>
 

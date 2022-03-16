@@ -8,6 +8,7 @@ import {
   Code,
   Grid,
   theme,
+  Center
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { Logo } from './Logo';
@@ -20,11 +21,11 @@ function App() {
     <ChakraProvider theme={theme}>
       <NavBar></NavBar>
 
-      <Box textAlign="center" fontSize="xl" height="100vh" p={3}>
-            <ProbableProvider>
-            <Probable/>
-            </ProbableProvider>
-      </Box>
+      <Center height="80vh" p={3}>
+        <ProbableProvider>
+          <Probable/>
+        </ProbableProvider>
+      </Center>
     </ChakraProvider>
   );
 }
