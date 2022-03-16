@@ -7,19 +7,11 @@ import {
 import GridItem from './GridItem';
 import { useProbable } from '../Context/ProbableProvider';
 
-function getStatus(letterInGuess, index, word) {
-    if(letterInGuess === word[index]) {
-        return 'correct';
-    }
-    if(word.includes(letterInGuess)){
-        return 'partial';
-    }
-    return 'wrong';
-}
+
 
 
 export default function GuessedRow({ word }) {
-    const {currWord} = useProbable();
+    const {currWord, getStatus} = useProbable();
     return (
         <Stack direction={'row'} spacing={3} justifyContent='center'>
             {Array.from(word).map((val, index) => {

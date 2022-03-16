@@ -12,11 +12,41 @@ export function useProbable() {
 
 export function ProbableProvider({ children }) {
 
-  const [guessCount, setGuessCount] = useState(1);
+  const [guessCount, setGuessCount] = useState(0);
   const [currWord, setCurrWord] = useState("");
-  const [guessed, setGuessed] = useState(["carot"]);
+  const [guessed, setGuessed] = useState([]);
   const [loading, setLoading] = useState(true);
   const [gameOver, setGameOver] = useState(false);
+  const [keyboardStatus, setKeyboardStatus] = useState(
+  {
+    "A": 'normal',
+    "B": 'normal',
+    "C": 'normal',
+    "D": 'normal',
+    "E": 'normal',
+    "F": 'normal',
+    "G": 'normal',
+    "H": 'normal',
+    "I": 'normal',
+    "J": 'normal',
+    "K": 'normal',
+    "L": 'normal',
+    "M": 'normal',
+    "N": 'normal',
+    "O": 'normal',
+    "P": 'normal',
+    "Q": 'normal',
+    "R": 'normal',
+    "S": 'normal',
+    "T": 'normal',
+    "U": 'normal',
+    "V": 'normal',
+    "W": 'normal',
+    "X": 'normal',
+    "Y": 'normal',
+    "Z": 'normal',
+  }
+  )
 
   function getRandomWord() {
     const words = data.words;
@@ -24,10 +54,26 @@ export function ProbableProvider({ children }) {
     return words[randomIndex];
   }
 
+  function getStatus(letterInGuess, index, word) {
+    if(letterInGuess === word[index]) {
+        return 'correct';
+    }
+    if(word.includes(letterInGuess)){
+        return 'partial';
+    }
+    return 'wrong';
+}
+
   function checkGuess(guess) {
     const words = data.words;
     if(words.includes(guess)) {
-      console.log("yes");
+      const d = {}
+      for (let i = 0; i < guess.length; i++) {
+        d[guess[i]] = getStatus(guess[i], i, currWord);
+        console.log(d)
+      }
+      setKeyboardStatus({...keyboardStatus, ...d});
+      // console.log(keyboardStatus)
       setGuessed(guessed.concat(guess));
       setGuessCount(guessCount + 1);
       if(guess === currWord){
@@ -67,7 +113,9 @@ export function ProbableProvider({ children }) {
     setGuessed,
     gameOver, 
     setGameOver,
-    checkGuess
+    checkGuess,
+    getStatus,
+    keyboardStatus,
   }
   return (
     <ProbableContext.Provider value={value}>
