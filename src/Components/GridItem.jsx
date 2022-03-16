@@ -11,8 +11,9 @@ const border = '1px solid gray'
 
 const colors = {
     'correct': 'green',
-    'partial': 'yellow',
-    'normal': 'transparent'
+    'partial': 'orange',
+    'normal': 'transparent',
+    'wrong': 'grey'
 }
 
 export default function GridItem (props) {
@@ -24,10 +25,12 @@ export default function GridItem (props) {
             width={width}
             bg = {colors[props.status]}
             display = 'inline-block'
-            fontStyle={'bold'}
-            fontSize={'2rem'}
+            fontWeight = {700}
+            fontSize = '2.1rem'
+            textAlign = 'center'
+            paddingY = 'auto'
         >
-            {props.guess}
+            {props.guess.toUpperCase()}
         </Box>
     )
 }

@@ -7,15 +7,16 @@ import {
 import GridItem from './GridItem';
 
 
-export default function CurrentRow({ props }) {
+export default function CurrentRow({ word }) {
     return (
         <Stack direction={'row'} spacing={3} justifyContent='center'>
-            {props.map((_, index) => {
+            {Array.from(word).map((val, index) => {
                 return (
-                    <GridItem {...props[index]}/>
+                    <GridItem key= {index} status='normal' guess={val} />
                 )
             })
             }
+            
         </Stack>
 
     )

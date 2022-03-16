@@ -8,32 +8,33 @@ import GridItem from './GridItem';
 import EmptyRow from './EmptyRow';
 import GuessedRow from './GuessedRow';
 import CurrentRow from './CurrentRow';
+import { useProbable } from '../Context/ProbableProvider';
 const ROWS = 6;
-
 
 
 
 export default function Probable() {
 
+    const { guessed, currWord, guessCount, gameOver } = useProbable();
     const [currCol, setCurrCol] = React.useState(0);
+    const [currGuess, setCurrGuess] = React.useState("aneem");
     const move = (e) => {
         const key = e.keyCode;
         if (key > 64 && key < 91) {
             console.log("alphabet pressed", key);
-            setCurrLetter(String.fromCharCode(key));
+            // setCurrLetter(String.fromCharCode(key));
+            if (currCol < ROWS - 1) {
+                setCurrCol(currCol + 1);
+            }
         }
-        if(key === 8){
+        if (key === 8) {
             console.log("backspace pressed");
         }
-        if(key === 13){
+        if (key === 13) {
             console.log("enter pressed");
         }
     }
     document.addEventListener("keydown", move);
-    const [currRow, setCurrRow] = React.useState(0);
-    const [guessed, setGuessed] = React.useState(0);
-    const [currLetter, setCurrLetter] = React.useState('A');
-    const [complete, setComplete] = React.useState(false);
 
 
     return (
@@ -41,39 +42,30 @@ export default function Probable() {
             <Stack direction={'column'} spacing={3} justifyContent='center'>
                 <>
                     {
-                        Array(guessed).fill(0).map((_, index) => {
+                        Array(guessCount).fill(0).map((_, index) => {
                             return (
-                                <GuessedRow key={index} props={
-                                    Array(6).fill({
-                                        status: 'normal',
-                                        guess: currLetter,
-                                    })
-                                } />
+                                <GuessedRow key = {index} word={guessed[index]} />
                             )
                         })
+
                     }
                     {
-                        !complete ? <CurrentRow props={
-                            Array(6).fill({
-                                status: 'correct',
-                                guess: currLetter,
-                            })
-                        }></CurrentRow> : <></>
+                        gameOver ?
+                            <></> : <CurrentRow word={currGuess} />
+
                     }
                     {
-                        Array(ROWS - guessed - (!complete)).fill(0).map((_, index) => {
+                        Array(ROWS - guessCount - !gameOver).fill(0).map((_, index) => {
                             return (
-                                <EmptyRow key={index} props={
-                                    Array(6).fill({
-                                        status: 'normal',
-                                        guess: currLetter,
-                                    })
-                                } />
+                                <EmptyRow key={index}/>
                             )
                         })
                     }
                 </>
+
             </Stack>
         </Box>
     )
 }
+
+
