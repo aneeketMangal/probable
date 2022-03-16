@@ -17,36 +17,8 @@ export function ProbableProvider({ children }) {
   const [guessed, setGuessed] = useState([]);
   const [loading, setLoading] = useState(true);
   const [gameOver, setGameOver] = useState(false);
-  const [keyboardStatus, setKeyboardStatus] = useState(
-  {
-    "A": 'normal',
-    "B": 'normal',
-    "C": 'normal',
-    "D": 'normal',
-    "E": 'normal',
-    "F": 'normal',
-    "G": 'normal',
-    "H": 'normal',
-    "I": 'normal',
-    "J": 'normal',
-    "K": 'normal',
-    "L": 'normal',
-    "M": 'normal',
-    "N": 'normal',
-    "O": 'normal',
-    "P": 'normal',
-    "Q": 'normal',
-    "R": 'normal',
-    "S": 'normal',
-    "T": 'normal',
-    "U": 'normal',
-    "V": 'normal',
-    "W": 'normal',
-    "X": 'normal',
-    "Y": 'normal',
-    "Z": 'normal',
-  }
-  )
+  const [keyboardStatus, setKeyboardStatus] = useState(Array(26).fill("normal"));
+  
 
   function getRandomWord() {
     const words = data.words;
@@ -67,12 +39,16 @@ export function ProbableProvider({ children }) {
   function checkGuess(guess) {
     const words = data.words;
     if(words.includes(guess)) {
-      const d = {}
       for (let i = 0; i < guess.length; i++) {
-        d[guess[i]] = getStatus(guess[i], i, currWord);
-        console.log(d)
+        const aa = guess[i].charCodeAt(0);
+        const bb = getStatus(guess[i], i, currWord);
+        const temp = keyboardStatus
+        temp[aa-97] = bb;
+        setKeyboardStatus(temp);
+        console.log(keyboardStatus);
       }
-      setKeyboardStatus({...keyboardStatus, ...d});
+      
+      // setKeyboardStatus({...keyboardStatus, ...d});
       // console.log(keyboardStatus)
       setGuessed(guessed.concat(guess));
       setGuessCount(guessCount + 1);
@@ -116,6 +92,7 @@ export function ProbableProvider({ children }) {
     checkGuess,
     getStatus,
     keyboardStatus,
+    setKeyboardStatus
   }
   return (
     <ProbableContext.Provider value={value}>

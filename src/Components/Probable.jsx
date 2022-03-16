@@ -22,8 +22,9 @@ const COLUMNS = 5;
 
 export default function Probable() {
 
-    const { guessed, checkGuess, guessCount, gameOver } = useProbable();
+    const { guessed, checkGuess, guessCount, gameOver} = useProbable();
     const [currGuess, setCurrGuess] = React.useState("");
+    const [temp, setTemp] = React.useState(0);
     const move = (key) => {
         
         if (key >= 'A' && key <= 'Z') {
@@ -43,6 +44,7 @@ export default function Probable() {
             if(currGuess.length === COLUMNS) {
                 const check = checkGuess(currGuess);
                 setCurrGuess("");
+                setTemp(temp + 1);
             }
             else{
                 alert("Please enter a word of length 5");
@@ -86,7 +88,7 @@ export default function Probable() {
                         }
                     </>
 
-        <KeyBoard onClick = {move}></KeyBoard>
+        <KeyBoard btest = {temp} onClick = {move}></KeyBoard>
                 </Stack>
             </Box>
         </>

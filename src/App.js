@@ -21,11 +21,11 @@ function App() {
     <ChakraProvider theme={theme}>
       <NavBar></NavBar>
 
-      <Center height="80vh" p={3}>
         <ProbableProvider>
+      <Center height="80vh" p={3}>
           <Probable/>
-        </ProbableProvider>
       </Center>
+        </ProbableProvider>
     </ChakraProvider>
   );
 }

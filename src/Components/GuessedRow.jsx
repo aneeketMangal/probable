@@ -16,7 +16,7 @@ export default function GuessedRow({ word }) {
         <Stack direction={'row'} spacing={3} justifyContent='center'>
             {Array.from(word).map((val, index) => {
                 return (
-                    <GridItem status={getStatus(val, index, currWord)} guess = {val}/>
+                    <GridItem key = {index} status={getStatus(val, index, currWord)} guess = {val}/>
                 )
             })
             }
