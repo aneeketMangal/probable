@@ -1,47 +1,37 @@
-import { ReactNode } from 'react';
 import {
   Box,
   Flex,
-  Avatar,
-  Link,
   IconButton,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-  useDisclosure,
   useColorModeValue,
   Stack,
   useColorMode,
-  Center,
   Heading,
-  Button
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Button,
 } from '@chakra-ui/react';
-import { MoonIcon, SunIcon } from '@chakra-ui/icons';
-const NavLink = ({ children }) => (
-  <Link
-    px={2}
-    py={1}
-    rounded={'md'}
-    _hover={{
-      textDecoration: 'none',
-      bg: useColorModeValue('gray.200', 'gray.700'),
-    }}
-    href={'#'}>
-    {children}
-  </Link>
-);
+import React from 'react';
+import { MoonIcon, SunIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
+
+const instructions = 'Welcome to the Probable.\n\nThe objective of the game is to guess the word correctly in 6 tries.\n\nThe game will end when you guess the word correctly or you run out of guesses.\n\n. Following happens when you guess a word:\n1.The letters in the guessed word become orange or green, where orange means that the letter is present in the word but not at correct position & green means the letter is at correct position.\n2. Now in this game there is 4/5 probability that above rule holds for the latest guess and 1/5 probability that the coloring will be random. \n3.The rule of randomization applies only to the latest guess you made.\n\nYou can guess a letter by pressing the corresponding key on the keyboard.\n\nGood luck! :)';
+
+
 
 export default function NavBar() {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const finalRef = React.useRef()
   const { colorMode, toggleColorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Box bg={useColorModeValue('teal.200')} px={4}>
+      <Box bg={useColorModeValue('white')} px={4}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
             <Heading>
-
               Probable
             </Heading>
 
@@ -52,42 +42,35 @@ export default function NavBar() {
               onClick={toggleColorMode} 
               variant = 'ghost' 
               icon={colorMode==='light'?<MoonIcon/>: <SunIcon/>}/>
+              <IconButton 
+              onClick={onOpen} 
+              variant = 'ghost' 
+              icon={<QuestionOutlineIcon/>}/>
 
 
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  rounded={'full'}
-                  variant={'link'}
-                  cursor={'pointer'}
-                  minW={0}>
-                  <Avatar
-                    size={'sm'}
-                    src={'https://avatars.dicebear.com/api/male/username.svg'}
-                  />
-                </MenuButton>
-                <MenuList alignItems={'center'}>
-                  <br />
-                  <Center>
-                    <Avatar
-                      size={'2xl'}
-                      src={'https://avatars.dicebear.com/api/male/username.svg'}
-                    />
-                  </Center>
-                  <br />
-                  <Center>
-                    <p>Username</p>
-                  </Center>
-                  <br />
-                  <MenuDivider />
-                  <MenuItem>Your Servers</MenuItem>
-                  <MenuItem>Account Settings</MenuItem>
-                  <MenuItem>Logout</MenuItem>
-                </MenuList>
-              </Menu>
+
+
+              
             </Stack>
           </Flex>
         </Flex>
+
+        <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Instructions</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {instructions}
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='blue' mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       </Box>
     </>
   );

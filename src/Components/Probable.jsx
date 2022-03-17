@@ -1,11 +1,9 @@
 import React from 'react'
 import {
     Box,
-    SimpleGrid,
     Stack,
-    Button
+    useToast
 } from '@chakra-ui/react'
-import GridItem from './GridItem';
 import EmptyRow from './EmptyRow';
 import GuessedRow from './GuessedRow';
 import CurrentRow from './CurrentRow';
@@ -13,7 +11,6 @@ import { useProbable } from '../Context/ProbableProvider';
 
 
 import "react-simple-keyboard/build/css/index.css";
-import Keyboard from "react-simple-keyboard";
 import KeyBoard from './KeyBoard';
 const ROWS = 6;
 const COLUMNS = 5;
@@ -22,6 +19,7 @@ const COLUMNS = 5;
 
 export default function Probable() {
 
+    const toast = useToast();
     const { guessed, checkGuess, guessCount, gameOver} = useProbable();
     const [currGuess, setCurrGuess] = React.useState("");
     const [temp, setTemp] = React.useState(0);
@@ -32,24 +30,50 @@ export default function Probable() {
             if(currGuess.length < COLUMNS) {
                 setCurrGuess(currGuess + currPressedLetter);
             }
-            console.log("alphabet pressed", key);
 
         }
         if (key === "back") {
-            console.log("backspace pressed");
             setCurrGuess(currGuess.slice(0, currGuess.length - 1));
         }
         if (key === "enter") {
-            console.log("enter pressed");
             if(currGuess.length === COLUMNS) {
                 const check = checkGuess(currGuess);
+                if(check === 1){
+                    toast({
+                        title: "Bingo!!",
+                        description: "You guessed the word",
+                        status: "success",
+                        duration: 2000,
+                    })
+                }
+                else if (check === 0){
+                    toast({
+                        title: "Oops!!",
+                        description: "Try again",
+                        status: "error",
+                        duration: 2000,
+                    })
+                }
+                else if(check === -1){
+                    toast({
+                        title: "Bummer!!",
+                        description: "No such word in our dictionary",
+                        status: "error",
+                        duration: 2000,
+                    })
+                }
+                
                 setCurrGuess("");
-                setTemp(temp + 1);
             }
             else{
-                alert("Please enter a word of length 5");
+                toast({
+                    title: "Bleh!!",
+                    description: "Not enough letters",
+                    status: "error",
+                    duration: 1000,
+                })
             }
-            }
+        }
     }
 
 
@@ -80,15 +104,10 @@ export default function Probable() {
                                 )
                             })
                         }
-                        {
-
-                            // <Keyboard style = {{color: 'black', backgroundColor: 'black'}} onKeyPress={move} />
-                        }
-                        {
-                        }
+                        
                     </>
 
-        <KeyBoard btest = {temp} onClick = {move}></KeyBoard>
+        <KeyBoard onClick = {move}></KeyBoard>
                 </Stack>
             </Box>
         </>

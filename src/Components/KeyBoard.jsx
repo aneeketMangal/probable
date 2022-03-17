@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react'
-import { SimpleGrid, Box, Button } from '@chakra-ui/react'
+import React from 'react'
+import { SimpleGrid, Box, Button, Stack } from '@chakra-ui/react'
 import { useProbable } from '../Context/ProbableProvider';
 
 function getColor(status) {
-    console.log("temppd")
     switch (status) {
         case 'correct':
             return 'green';
@@ -12,22 +11,22 @@ function getColor(status) {
         case 'wrong':
             return 'grey';
         case 'normal':
-            return 'transparent';
+            return 'bluegray';
         default:
             return 'bluegray';
     }
 }
 
 const Key = ({ children, props, onClick, status }) => {
-    // create a custom event
-    console.log("key called")
-    console.log(status)
+
     return (
         <Button
-            h='6.5vh' w='100%'
-            textAlign='center' fontSize='2rem' fontWeight='500'
+            h='40px' 
+            minWidth='4.7vh'
+            textAlign='center' fontSize='0.8rem' fontWeight='300'
             paddingY='auto'
             paddingX='auto'
+            borderRadius = '0px'
             backgroundColor = {getColor(status)}
             onClick={() => onClick(props)}
         >
@@ -38,24 +37,26 @@ const Key = ({ children, props, onClick, status }) => {
 
 
 
-const qwerty = "QWERTYUIOPASDFGHJKLZXCVBNM";
+const qwertyOne = "QWERTYUIOP";
+const qwertyTwo = "ASDFGHJKL";
+const qwertyThree = "ZXCVBNM";
+
 
 export default function KeyBoard(props) {
-    const { keyboardStatus, setKeyboardStatus, guessCount} = useProbable();
-    
-    // useEffect(() => {
-    //     console.log("keyboardStatus", keyboardStatus);
-    //     setKeyboardStatus(keyboardStatus);
-    // }, [keyboardStatus]);
-
-
+    const { keyboardStatus} = useProbable();
+   
     return (
 
-        <>
-            
-            <SimpleGrid columns={9} spacingX='5px' spacingY='10px' paddingX='auto'>
+        <
+        // bg = 'black'
+        // paddingX  ='3px'
+        // paddingY  ='3px'
+        >
+            <Stack spacing = '0px'>
+
+            <SimpleGrid columns={10} spacingX='0px' spacingY='0px'>
                 {
-                    Array.from(qwerty).map((value, index) => {
+                    Array.from(qwertyOne).map((value, index) => {
                         return (
                             <Key
                             key={index}
@@ -67,23 +68,43 @@ export default function KeyBoard(props) {
                         })
                     }
             </SimpleGrid>
-                    {props.test}
+            <SimpleGrid columns={9} spacingX='0px' spacingY='0px' paddingX="1.4vh">
+                {
+                    Array.from(qwertyTwo).map((value, index) => {
+                        return (
+                            <Key
+                            key={index}
+                            props={value}
+                            status = {keyboardStatus[value.charCodeAt(0) - 65]}    
+                            onClick={props.onClick}
+                            >{value}</Key>
+                            )
+                        })
+                    }
+            </SimpleGrid>
+
+            <SimpleGrid columns={7} spacingX='0px' spacingY='0px' paddingX="6.5vh">
+                {
+                    Array.from(qwertyThree).map((value, index) => {
+                        return (
+                            <Key
+                            key={index}
+                            props={value}
+                            status = {keyboardStatus[value.charCodeAt(0) - 65]}    
+                            onClick={props.onClick}
+                            >{value}</Key>
+                            )
+                        })
+                    }
+            </SimpleGrid>
+
+
+                    </Stack>
+
+                    
             <SimpleGrid columns={2}  spacingX='10px' paddingX='auto'>
             
             <Button
-                key = {'tempp'}
-                h='6.5vh' w='100%'
-                textAlign='center' fontSize='1rem' fontWeight='500'
-                paddingY='auto'
-                paddingX='auto'
-                backgroundColor = {getColor(keyboardStatus['A'])}
-
-                onClick={() => props.onClick('enter')}
-            >
-                {keyboardStatus[0]}
-            </Button>
-            <Button
-            key = {'temp'}
                 h='6.5vh' w='100%'
                 textAlign='center' fontSize='1rem' fontWeight='500'
                 paddingY='auto'
@@ -92,6 +113,17 @@ export default function KeyBoard(props) {
                 onClick={() => props.onClick('back')}
             >
                 BackSpace ⌫
+            </Button>
+            <Button
+                h='6.5vh' w='100%'
+                textAlign='center' fontSize='1rem' fontWeight='500'
+                paddingY='auto'
+                paddingX='auto'
+                backgroundColor = {getColor(keyboardStatus['A'])}
+
+                onClick={() => props.onClick('enter')}
+            >
+            Enter
             </Button>
             </SimpleGrid>
         </>
