@@ -1,26 +1,55 @@
-import React, { useContext, useState, useEffect } from "react";
-import data from "../data/5-words.json";
-const ProbableContext = React.createContext()
-
+import React, { useContext, useState, useEffect } from 'react';
+import data from '../data/5-words.json';
+const ProbableContext = React.createContext();
 
 export function useProbable() {
-  return useContext(ProbableContext)
+  return useContext(ProbableContext);
 }
 
-
-
-
 export function ProbableProvider({ children }) {
-
   const [guessCount, setGuessCount] = useState(0);
-  const [currWord, setCurrWord] = useState("");
+  const [currWord, setCurrWord] = useState('');
   const [guessed, setGuessed] = useState([]);
   const [loading, setLoading] = useState(true);
   const [gameOver, setGameOver] = useState(false);
-  const [keyboardStatus, setKeyboardStatus] = useState(Array(26).fill("normal"));
-  
-  function gameOverHandler(){
-    setGameOver(true);    
+  const [keyboardStatus, setKeyboardStatus] = useState(Array(26).fill('normal'));
+
+  function gameOverHandler() {
+    setGameOver(true);
+  }
+
+  function setUpdateKeyboardStatus(newKeyboardStatus) {
+    setKeyboardStatus(newKeyboardStatus);
+    localStorage.setItem('keyboardStatus', JSON.stringify(newKeyboardStatus));
+  }
+
+  function setUpdateGuess(newGuess) {
+    const newGuessed = guessed.concat(newGuess);
+    setGuessed(newGuessed);
+    localStorage.setItem('guessed', JSON.stringify(newGuessed));
+    const newGuessCount = guessCount + 1;
+    setGuessCount(newGuessCount);
+    localStorage.setItem('guessCount', JSON.stringify(newGuessCount));
+  }
+
+  function setUpdate(newKeyboardStatus, newGuess) {
+    setUpdateKeyboardStatus(newKeyboardStatus);
+    setUpdateGuess(newGuess);
+  }
+
+  function startNewGame(){
+    setLoading(true);
+    setGuessCount(0);
+    setGuessed([]);
+    const newCurrWord = getRandomWord()
+    setCurrWord(newCurrWord);
+    setGameOver(false);
+    setKeyboardStatus(Array(26).fill('normal'));
+    localStorage.setItem('currWord', newCurrWord)
+    localStorage.setItem('guessCount', JSON.stringify(0));
+    localStorage.setItem('guessed', JSON.stringify([]));
+    localStorage.setItem('keyboardStatus', JSON.stringify(Array(26).fill('normal')));
+    setLoading(false);
   }
 
   function getRandomWord() {
@@ -30,71 +59,62 @@ export function ProbableProvider({ children }) {
   }
 
   function getStatus(letterInGuess, index, word) {
-    if(letterInGuess === word[index]) {
-        return 'correct';
+    if (letterInGuess === word[index]) {
+      return 'correct';
     }
-    if(word.includes(letterInGuess)){
-        return 'partial';
+    if (word.includes(letterInGuess)) {
+      return 'partial';
     }
     return 'wrong';
-}
+  }
 
   function checkGuess(guess) {
     const words = data.words;
-    if(words.includes(guess)) {
-      const temp  = keyboardStatus;
+    if (words.includes(guess)) {
+      const currKeyboardStatus = keyboardStatus;
       for (let i = 0; i < guess.length; i++) {
         const aa = guess[i].charCodeAt(0);
         const bb = getStatus(guess[i], i, currWord);
-        temp[aa-97] = bb;
+        currKeyboardStatus[aa - 97] = bb;
       }
-      setKeyboardStatus(temp);
-      setGuessed(guessed.concat(guess));
-      setGuessCount(guessCount + 1);
 
-      // saving local storage cache
-      localStorage.setItem('keyboardStatusCache', JSON.stringify(temp));
-      localStorage.setItem("guessedCache", JSON.stringify(guessed.concat(guess)));
-      localStorage.setItem("guessCountCache", JSON.stringify(guessCount+1));
-      if(guess === currWord){
-       gameOverHandler();
-       return 1;
-      }
-      
-      else if(guessCount === 6){
+      setUpdate(currKeyboardStatus, guess);
+
+      if (guess === currWord) {
+        gameOverHandler();
+        return 1;
+      } else if (guessCount === 6) {
         gameOverHandler();
         return 0;
+      } else {
+        return -2;
       }
-      else{
-        return -2
-      }
-  }
-    else{
+    } else {
       return -1;
     }
   }
 
-  useEffect(() => {    
-    const guessedCache = localStorage.getItem("guessedCache");
-    console.log(guessedCache);
+  useEffect(() => {
+    const guessedCache = localStorage.getItem('guessed');
     setGuessed(guessedCache ? JSON.parse(guessedCache) : []);
-    const guessCountCache = localStorage.getItem("guessCountCache");
+    const guessCountCache = localStorage.getItem('guessCount');
     setGuessCount(guessCountCache ? JSON.parse(guessCountCache) : 0);
-    const keyboardStatusCache = localStorage.getItem("keyboardStatusCache");
-    setKeyboardStatus(keyboardStatusCache ? JSON.parse(keyboardStatusCache) : Array(26).fill("normal"));
-    const currWordCache = localStorage.getItem("currWordCache");
-    if(currWordCache){
+    const keyboardStatusCache = localStorage.getItem('keyboardStatus');
+    setKeyboardStatus(
+      keyboardStatusCache
+        ? JSON.parse(keyboardStatusCache)
+        : Array(26).fill('normal')
+    );
+    const currWordCache = localStorage.getItem('currWord');
+    if (currWordCache) {
       setCurrWord(currWordCache);
-    }
-    else{
+    } else {
       const curr = getRandomWord();
-      localStorage.setItem("currWordCache", curr);
+      localStorage.setItem('currWord', curr);
       setCurrWord(curr);
     }
     setLoading(false);
-  } , []);
-
-   
+  }, []);
 
   const value = {
     guessCount,
@@ -103,16 +123,17 @@ export function ProbableProvider({ children }) {
     setCurrWord,
     guessed,
     setGuessed,
-    gameOver, 
+    gameOver,
     setGameOver,
     checkGuess,
     getStatus,
     keyboardStatus,
-    setKeyboardStatus
-  }
+    setKeyboardStatus,
+    startNewGame,
+  };
   return (
     <ProbableContext.Provider value={value}>
       {!loading && children}
     </ProbableContext.Provider>
-  )
+  );
 }

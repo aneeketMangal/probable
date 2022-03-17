@@ -1,5 +1,5 @@
 import React from 'react'
-import { SimpleGrid, Box, Button, Stack } from '@chakra-ui/react'
+import { SimpleGrid, Button, Stack } from '@chakra-ui/react'
 import { useProbable } from '../Context/ProbableProvider';
 
 function getColor(status) {

@@ -1,27 +1,25 @@
 import React from 'react';
 import {
   ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-  Center
+  Center,
+  extendTheme
 } from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { Logo } from './Logo';
+
 import Probable from './Components/Probable';
 import NavBar from './Components/Navbar';
 import { ProbableProvider } from './Context/ProbableProvider';
+const config = {
+  initialColorMode: 'dark',
+  useSystemColorMode: false,
+}
 
+const theme = extendTheme({ config })
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <NavBar></NavBar>
-
         <ProbableProvider>
+      <NavBar/>
+
       <Center height="80vh" p={3}>
           <Probable/>
       </Center>

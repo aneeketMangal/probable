@@ -22,7 +22,6 @@ export default function Probable() {
     const toast = useToast();
     const { guessed, checkGuess, guessCount, gameOver} = useProbable();
     const [currGuess, setCurrGuess] = React.useState("");
-    const [temp, setTemp] = React.useState(0);
     const move = (key) => {
         
         if (key >= 'A' && key <= 'Z') {
