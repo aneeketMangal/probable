@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-    Box,
     Stack
 }
     from '@chakra-ui/react'
@@ -11,8 +10,7 @@ import { useProbable } from '../Context/ProbableProvider';
 
 
 export default function GuessedRow({word}) {
-    const {getStatus, guessed} = useProbable();
-    console.log("word", word, typeof(word));
+    const {getStatus} = useProbable();
     
     return (
         

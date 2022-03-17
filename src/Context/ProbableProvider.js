@@ -112,7 +112,8 @@ export function ProbableProvider({ children }) {
         return 1;
       } 
      
-      if (guessCount === 6) {
+      if (guessCount === 5) {
+       
         newGuessed.push(guess);
         setUpdate(newGuessed);
         gameOverHandler();
@@ -120,7 +121,6 @@ export function ProbableProvider({ children }) {
       } else {
         var falseGuess = guess;
         const randomNumber = Math.floor((Math.random() * 1000000) + 1);
-        console.log("randomNumber", randomNumber);
         if(randomNumber%2 === 0){
           falseGuess = getRandomWord();
         }    

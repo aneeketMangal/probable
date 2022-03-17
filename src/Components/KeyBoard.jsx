@@ -1,7 +1,7 @@
 import React from 'react'
 import { SimpleGrid, Button, Stack } from '@chakra-ui/react'
 import { useProbable } from '../Context/ProbableProvider';
-import { SearchIcon, ArrowLeftIcon, CheckIcon} from "@chakra-ui/icons"
+import {ArrowLeftIcon, CheckIcon} from "@chakra-ui/icons"
 
 
 function getColor(status) {
