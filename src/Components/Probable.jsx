@@ -20,7 +20,7 @@ const COLUMNS = 5;
 export default function Probable() {
 
     const toast = useToast();
-    const {checkGuess, guessCount, gameOver, guessed} = useProbable();
+    const {checkGuess, guessCount, gameOver, guessed, currWord} = useProbable();
     const [currGuess, setCurrGuess] = React.useState("");
     const move = (key) => {
         
@@ -48,7 +48,7 @@ export default function Probable() {
                 else if (check === 0){
                     toast({
                         title: "Vapis se khel yar",
-                        description: "Try again",
+                        description: "Correct word was: " + currWord,
                         status: "error",
                         duration: 2000,
                     })
