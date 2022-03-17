@@ -58,12 +58,25 @@ export function ProbableProvider({ children }) {
     return words[randomIndex];
   }
 
-  function getStatus(letterInGuess, index, word) {
+  function getStatus(letterInGuess, index, word, isRandom) {
+    var status  = "";
     if (letterInGuess === word[index]) {
-      return 'correct';
+      status = 'correct';
     }
-    if (word.includes(letterInGuess)) {
-      return 'partial';
+    else if (word.includes(letterInGuess)) {
+      status = 'partial';
+    }
+    else{
+      status = 'wrong';
+    }
+    if(isRandom){
+      const aRandomNumber = Math.floor(Math.random() * 2);
+      // if(aRandomNumber%5 === 0){
+      //   return ;
+      // }
+      // else{
+        return status;
+      // }
     }
     return 'wrong';
   }
@@ -74,7 +87,7 @@ export function ProbableProvider({ children }) {
       const currKeyboardStatus = keyboardStatus;
       for (let i = 0; i < guess.length; i++) {
         const aa = guess[i].charCodeAt(0);
-        const bb = getStatus(guess[i], i, currWord);
+        const bb = getStatus(guess[i], i, currWord, false);
         currKeyboardStatus[aa - 97] = bb;
       }
 

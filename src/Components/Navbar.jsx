@@ -19,7 +19,7 @@ import {
 import React from 'react';
 import { MoonIcon, SunIcon, QuestionOutlineIcon, RepeatIcon } from '@chakra-ui/icons';
 import { useProbable } from '../Context/ProbableProvider';
-const instructions = 'Welcome to the Probable.\n\nThe objective of the game is to guess the word correctly in 6 tries.\n\nThe game will end when you guess the word correctly or you run out of guesses.\n\n. Following happens when you guess a word:\n1.The letters in the guessed word become orange or green, where orange means that the letter is present in the word but not at correct position & green means the letter is at correct position.\n2. Now in this game there is 4/5 probability that above rule holds for the latest guess and 1/5 probability that the coloring will be random. \n3.The rule of randomization applies only to the latest guess you made.\n\nYou can guess a letter by pressing the corresponding key on the keyboard.\n\nGood luck! :)';
+const instructions = 'Welcome to the Probable.\n\n\n  The objective of the game is to guess the word correctly in 6 tries.\n\nThe game will end when you guess the word correctly or you run out of guesses.\n\n Following happens when you guess a word:\n1.The letters in the guessed word become orange or green, where orange means that the letter is present in the word but not at correct position & green means the letter is at correct position.\n2. Now in this game there is 4/5 probability that above rule holds for the latest guess and 1/5 probability that the coloring will be random. \n3.The rule of randomization applies only to the latest guess you made.\n\nYou can guess a letter by pressing the corresponding key on the keyboard.\n\nGood luck! :)';
 
 
 
@@ -59,12 +59,12 @@ export default function NavBar() {
           </Flex>
         </Flex>
 
-        <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
+        <Modal  finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Instructions</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody sx = {{ whiteSpace: 'pre-line'}}>
             {instructions}
           </ModalBody>
 
