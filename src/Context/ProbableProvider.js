@@ -75,10 +75,9 @@ export function ProbableProvider({ children }) {
       //   return ;
       // }
       // else{
-        return status;
-      // }
-    }
-    return 'wrong';
+        // }
+      }
+      return status;
   }
 
   function checkGuess(guess) {
