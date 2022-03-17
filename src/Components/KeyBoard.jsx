@@ -1,6 +1,8 @@
 import React from 'react'
 import { SimpleGrid, Button, Stack } from '@chakra-ui/react'
 import { useProbable } from '../Context/ProbableProvider';
+import { SearchIcon, ArrowLeftIcon, CheckIcon} from "@chakra-ui/icons"
+
 
 function getColor(status) {
     switch (status) {
@@ -21,9 +23,9 @@ const Key = ({ children, props, onClick, status }) => {
 
     return (
         <Button
-            h='40px' 
-            minWidth='4.7vh'
-            textAlign='center' fontSize='0.8rem' fontWeight='300'
+            h='6vh' 
+            minWidth='6vh'
+            textAlign='center' fontSize='1.6rem' fontWeight='300'
             paddingY='auto'
             paddingX='auto'
             borderRadius = '0px'
@@ -52,9 +54,9 @@ export default function KeyBoard(props) {
         // paddingX  ='3px'
         // paddingY  ='3px'
         >
-            <Stack spacing = '0px'>
+            <Stack spacing = '10px'>
 
-            <SimpleGrid columns={10} spacingX='0px' spacingY='0px'>
+            <SimpleGrid columns={10} spacingX='10px' spacingY='0px'>
                 {
                     Array.from(qwertyOne).map((value, index) => {
                         return (
@@ -68,7 +70,7 @@ export default function KeyBoard(props) {
                         })
                     }
             </SimpleGrid>
-            <SimpleGrid columns={9} spacingX='0px' spacingY='0px' paddingX="1.4vh">
+            <SimpleGrid columns={9} spacingX='10px' spacingY='0px' paddingX="1.4vh">
                 {
                     Array.from(qwertyTwo).map((value, index) => {
                         return (
@@ -83,7 +85,7 @@ export default function KeyBoard(props) {
                     }
             </SimpleGrid>
 
-            <SimpleGrid columns={7} spacingX='0px' spacingY='0px' paddingX="6.5vh">
+            <SimpleGrid columns={7} spacingX='10px' spacingY='0px' paddingX="6.5vh">
                 {
                     Array.from(qwertyThree).map((value, index) => {
                         return (
@@ -105,16 +107,18 @@ export default function KeyBoard(props) {
             <SimpleGrid columns={2}  spacingX='10px' paddingX='auto'>
             
             <Button
+                rightIcon={<ArrowLeftIcon />}
                 h='6.5vh' w='100%'
                 textAlign='center' fontSize='1rem' fontWeight='500'
                 paddingY='auto'
                 paddingX='auto'
-
+                
                 onClick={() => props.onClick('back')}
-            >
-                BackSpace ⌫
+                >
+                 BackSpace
             </Button>
             <Button
+                rightIcon={<CheckIcon />}
                 h='6.5vh' w='100%'
                 textAlign='center' fontSize='1rem' fontWeight='500'
                 paddingY='auto'

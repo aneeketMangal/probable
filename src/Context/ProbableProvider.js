@@ -12,10 +12,23 @@ export function ProbableProvider({ children }) {
   const [guessed, setGuessed] = useState([]);
   const [loading, setLoading] = useState(true);
   const [gameOver, setGameOver] = useState(false);
+  const [lastTrueGuess, setLastTrueGuess] = useState('');
   const [keyboardStatus, setKeyboardStatus] = useState(Array(26).fill('normal'));
 
   function gameOverHandler() {
     setGameOver(true);
+  }
+
+  function recalculateKeyboardStatus(currGuessed) {
+    var newKeyboardStatus = Array(26).fill('normal');
+    currGuessed.forEach(val => {
+      for (let i = 0; i < val.length; i++) {
+        const aa = val[i].charCodeAt(0);
+        const bb = getStatus(val[i], i);
+        newKeyboardStatus[aa - 97] = bb;
+      }
+    })
+    return newKeyboardStatus;
   }
 
   function setUpdateKeyboardStatus(newKeyboardStatus) {
@@ -23,8 +36,7 @@ export function ProbableProvider({ children }) {
     localStorage.setItem('keyboardStatus', JSON.stringify(newKeyboardStatus));
   }
 
-  function setUpdateGuess(newGuess) {
-    const newGuessed = guessed.concat(newGuess);
+  function setUpdateGuess(newGuessed) {
     setGuessed(newGuessed);
     localStorage.setItem('guessed', JSON.stringify(newGuessed));
     const newGuessCount = guessCount + 1;
@@ -32,9 +44,10 @@ export function ProbableProvider({ children }) {
     localStorage.setItem('guessCount', JSON.stringify(newGuessCount));
   }
 
-  function setUpdate(newKeyboardStatus, newGuess) {
+  function setUpdate(newGuessed) {
+    const newKeyboardStatus = recalculateKeyboardStatus(newGuessed);
     setUpdateKeyboardStatus(newKeyboardStatus);
-    setUpdateGuess(newGuess);
+    setUpdateGuess(newGuessed);
   }
 
   function startNewGame(){
@@ -49,6 +62,7 @@ export function ProbableProvider({ children }) {
     localStorage.setItem('guessCount', JSON.stringify(0));
     localStorage.setItem('guessed', JSON.stringify([]));
     localStorage.setItem('keyboardStatus', JSON.stringify(Array(26).fill('normal')));
+    localStorage.setItem('lastTrueGuess', '');
     setLoading(false);
   }
 
@@ -58,47 +72,60 @@ export function ProbableProvider({ children }) {
     return words[randomIndex];
   }
 
-  function getStatus(letterInGuess, index, word, isRandom) {
+  function getStatus(letterInGuess, index) {
     var status  = "";
-    if (letterInGuess === word[index]) {
+    if (letterInGuess === currWord[index]) {
       status = 'correct';
     }
-    else if (word.includes(letterInGuess)) {
+    else if (currWord.includes(letterInGuess)) {
       status = 'partial';
     }
     else{
       status = 'wrong';
     }
-    if(isRandom){
-      const aRandomNumber = Math.floor(Math.random() * 2);
-      // if(aRandomNumber%5 === 0){
-      //   return ;
-      // }
-      // else{
-        // }
-      }
-      return status;
+    return status;
   }
+
+
 
   function checkGuess(guess) {
     const words = data.words;
     if (words.includes(guess)) {
-      const currKeyboardStatus = keyboardStatus;
-      for (let i = 0; i < guess.length; i++) {
-        const aa = guess[i].charCodeAt(0);
-        const bb = getStatus(guess[i], i, currWord, false);
-        currKeyboardStatus[aa - 97] = bb;
+      var newGuessed = guessed;
+      // first set the last unset word
+      if(newGuessed.length >0){
+        newGuessed.pop();
+        newGuessed.push(lastTrueGuess);
       }
-
-      setUpdate(currKeyboardStatus, guess);
-
+      setLastTrueGuess(guess);
+      localStorage.setItem('lastTrueGuess', guess);
+      
+      
+      // creating a false guess with probability 1/5
+      
+      
+      
       if (guess === currWord) {
+        newGuessed.push(guess);
+        setUpdate(newGuessed);
         gameOverHandler();
         return 1;
-      } else if (guessCount === 6) {
+      } 
+     
+      if (guessCount === 6) {
+        newGuessed.push(guess);
+        setUpdate(newGuessed);
         gameOverHandler();
         return 0;
       } else {
+        var falseGuess = guess;
+        const randomNumber = Math.floor((Math.random() * 1000000) + 1);
+        console.log("randomNumber", randomNumber);
+        if(randomNumber%2 === 0){
+          falseGuess = getRandomWord();
+        }    
+        newGuessed.push(falseGuess);
+        setUpdate(newGuessed);  
         return -2;
       }
     } else {
@@ -112,11 +139,16 @@ export function ProbableProvider({ children }) {
     const guessCountCache = localStorage.getItem('guessCount');
     setGuessCount(guessCountCache ? JSON.parse(guessCountCache) : 0);
     const keyboardStatusCache = localStorage.getItem('keyboardStatus');
+    const lastTrueGuessCache = localStorage.getItem('lastTrueGuess');
+    setLastTrueGuess(lastTrueGuessCache ? lastTrueGuessCache : '');
     setKeyboardStatus(
       keyboardStatusCache
         ? JSON.parse(keyboardStatusCache)
+        
         : Array(26).fill('normal')
     );
+    // const lastTrueGuessCache = localStorage.getItem('lastTrueGuess');
+    // setLastTrueGuess(lastTrueGuessCache ? lastTrueGuessCache : '');
     const currWordCache = localStorage.getItem('currWord');
     if (currWordCache) {
       setCurrWord(currWordCache);
@@ -125,6 +157,7 @@ export function ProbableProvider({ children }) {
       localStorage.setItem('currWord', curr);
       setCurrWord(curr);
     }
+    
     setLoading(false);
   }, []);
 

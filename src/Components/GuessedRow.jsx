@@ -10,13 +10,16 @@ import { useProbable } from '../Context/ProbableProvider';
 
 
 
-export default function GuessedRow({ word, isRandom }) {
-    const {currWord, getStatus} = useProbable();
+export default function GuessedRow({word}) {
+    const {getStatus, guessed} = useProbable();
+    console.log("word", word, typeof(word));
+    
     return (
+        
         <Stack direction={'row'} spacing={3} justifyContent='center'>
             {Array.from(word).map((val, index) => {
                 return (
-                    <GridItem key = {index} status={getStatus(val, index, currWord, isRandom)} guess = {val}/>
+                    <GridItem key = {index} status={getStatus(val, index)} guess = {val}/>
                 )
             })
             }

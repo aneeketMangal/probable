@@ -20,7 +20,7 @@ const COLUMNS = 5;
 export default function Probable() {
 
     const toast = useToast();
-    const { guessed, checkGuess, guessCount, gameOver} = useProbable();
+    const {checkGuess, guessCount, gameOver, guessed} = useProbable();
     const [currGuess, setCurrGuess] = React.useState("");
     const move = (key) => {
         
@@ -39,7 +39,7 @@ export default function Probable() {
                 const check = checkGuess(currGuess);
                 if(check === 1){
                     toast({
-                        title: "Bingo!!",
+                        title: "Gajab",
                         description: "You guessed the word",
                         status: "success",
                         duration: 2000,
@@ -47,7 +47,7 @@ export default function Probable() {
                 }
                 else if (check === 0){
                     toast({
-                        title: "Oops!!",
+                        title: "Vapis se khel yar",
                         description: "Try again",
                         status: "error",
                         duration: 2000,
@@ -55,7 +55,7 @@ export default function Probable() {
                 }
                 else if(check === -1){
                     toast({
-                        title: "Bummer!!",
+                        title: "Nahi yaar",
                         description: "No such word in our dictionary",
                         status: "error",
                         duration: 2000,
@@ -66,7 +66,7 @@ export default function Probable() {
             }
             else{
                 toast({
-                    title: "Bleh!!",
+                    title: "Bhai kya kar raha hai yar!!",
                     description: "Not enough letters",
                     status: "error",
                     duration: 1000,
@@ -84,9 +84,9 @@ export default function Probable() {
                 <Stack direction={'column'} spacing={3} justifyContent='center'>
                     <>
                         {
-                            Array(guessCount).fill(0).map((_, index) => {
+                            guessed.map((val, index) => {
                                 return (
-                                    <GuessedRow key={index} word={guessed[index]} />
+                                    <GuessedRow key={index} word= {val} />
                                 )
                             })
 
