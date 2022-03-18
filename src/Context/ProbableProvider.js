@@ -65,6 +65,7 @@ export function ProbableProvider({ children }) {
     localStorage.setItem('guessed', JSON.stringify([]));
     localStorage.setItem('keyboardStatus', JSON.stringify(Array(26).fill('normal')));
     localStorage.setItem('lastTrueGuess', '');
+    localStorage.setItem('gameOver', false);
     setLoading(false);
   }
 
