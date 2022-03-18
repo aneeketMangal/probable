@@ -23,6 +23,14 @@ export default function Probable() {
     const {checkGuess, guessCount, gameOver, guessed, currWord} = useProbable();
     const [currGuess, setCurrGuess] = React.useState("");
     const move = (key) => {
+        if(gameOver){
+            toast({
+                title: 'Bas bhai!',
+                description: 'Game Over. Start a new game',
+                status: 'info',
+                duration: 2000,
+            })
+        }
         
         if (key >= 'A' && key <= 'Z') {
             const currPressedLetter = key.toLowerCase();
@@ -43,6 +51,7 @@ export default function Probable() {
                         description: "You guessed the word",
                         status: "success",
                         duration: 2000,
+                        position: "top",
                     })
                 }
                 else if (check === 0){
@@ -50,7 +59,9 @@ export default function Probable() {
                         title: "Vapis se khel yar",
                         description: "Correct word was: " + currWord,
                         status: "error",
-                        duration: 2000,
+                        duration: 2000000,
+                        isClosable: true,
+                        position: "top",
                     })
                 }
                 else if(check === -1){

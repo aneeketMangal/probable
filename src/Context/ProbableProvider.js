@@ -58,6 +58,7 @@ export function ProbableProvider({ children }) {
     const newCurrWord = getRandomWord()
     setCurrWord(newCurrWord);
     setGameOver(false);
+    setLastTrueGuess('');
     setKeyboardStatus(Array(26).fill('normal'));
     localStorage.setItem('currWord', newCurrWord)
     localStorage.setItem('guessCount', JSON.stringify(0));
