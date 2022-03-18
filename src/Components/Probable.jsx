@@ -29,7 +29,8 @@ export default function Probable() {
                 description: 'Game Over. Start a new game',
                 status: 'info',
                 duration: 2000,
-            })
+            });
+            return;
         }
         
         if (key >= 'A' && key <= 'Z') {
@@ -53,6 +54,7 @@ export default function Probable() {
                         duration: 2000,
                         position: "top",
                     })
+
                 }
                 else if (check === 0){
                     toast({
