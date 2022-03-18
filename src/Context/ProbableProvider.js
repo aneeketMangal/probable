@@ -17,6 +17,7 @@ export function ProbableProvider({ children }) {
 
   function gameOverHandler() {
     setGameOver(true);
+    localStorage.setItem('gameOver', true);
   }
 
   function recalculateKeyboardStatus(currGuessed) {
@@ -134,6 +135,9 @@ export function ProbableProvider({ children }) {
   }
 
   useEffect(() => {
+
+    const gameOverCache = localStorage.getItem('gameOver');
+    setGameOver(gameOverCache? JSON.parse(gameOverCache): false);
     const guessedCache = localStorage.getItem('guessed');
     setGuessed(guessedCache ? JSON.parse(guessedCache) : []);
     const guessCountCache = localStorage.getItem('guessCount');

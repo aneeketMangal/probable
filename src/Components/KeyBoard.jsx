@@ -23,9 +23,12 @@ const Key = ({ children, props, onClick, status }) => {
 
     return (
         <Button
-            h='6vh' 
-            minWidth='6vh'
-            textAlign='center' fontSize='1.6rem' fontWeight='300'
+        h={{base: '5vh', sm: '5vh', md: '6vh', lg: '6vh', xl: '6vh'}}
+            minWidth={{ base: '27px', sm: '27px', md: '50px', lg: '50px' }} 
+            // minWidth='6vh'
+            textAlign='center' 
+            fontSize={{base: '1.3rem', sm: '1.3rem', md: '2rem', lg: '2rem'}} 
+            fontWeight='400'
             paddingY='auto'
             paddingX='auto'
             borderRadius = '0px'
